@@ -9,12 +9,37 @@ This repository contains a docker-compose setup for a
 outdated. Please make sure you read the files before executing them, and check the
 [issues](https://github.com/pretalx/pretalx-docker/issues) for further information. ⚠️**
 
-## Installation with docker-compose
+## Quick Start (Production-Ready with SWAG)
 
-### For testing
+### 1. Prepare configuration
 
-* Run ``docker-compose up -d``. After a few minutes the setup should be accessible at http://localhost/orga
-* Set up a user and an organizer by running ``docker exec -it pretalx pretalx init``.
+- Copy `template.env` to `.env` and fill in all required values (domain, email, database password, etc.).
+- Edit `conf/pretalx.cfg` and fill in your own values (see [pretalx configuration documentation](https://docs.pretalx.org/en/latest/administrator/configure.html)).
+- Copy `deployment/templates/pretalx.conf.template` to `./swag-config/nginx/site-confs/pretalx.conf` and replace `${URL}` with your domain name.
+
+### 2. Start the stack
+
+- Run `docker-compose up -d`. After a few minutes, the setup should be accessible at `https://yourdomain.com/orga`.
+- Set up a user and an organizer by running `docker exec -it pretalx pretalx init`.
+
+### 3. Periodic tasks
+
+- Set up a cronjob for periodic tasks like this:
+  `15,45 * * * * docker exec pretalx pretalx runperiodic`
+
+### 4. Updates
+
+- Run `docker-compose stop`, `docker-compose pull`, and finally `docker-compose up -d` to upgrade to the newest version.
+
+## Details: Reverse Proxy and SSL with SWAG
+
+This setup uses [linuxserver/swag](https://docs.linuxserver.io/images/docker-swag) for a secure, automated reverse proxy with Let's Encrypt SSL certificates.
+
+- All configuration is managed via environment variables in `.env` (see `template.env`).
+- The nginx site configuration for pretalx is templated in `deployment/templates/pretalx.conf.template`.
+- You must copy and edit this template before starting the stack.
+- The SWAG container will automatically obtain and renew SSL certificates for your domain.
+
 
 ### For production
 
@@ -42,12 +67,16 @@ outdated. Please make sure you read the files before executing them, and check t
 * Run ``docker-compose up -d ``. After a few minutes the setup should be accessible under http://yourdomain.com/orga
 * Set up a user and an organizer by running ``docker exec -ti pretalx pretalx init``.
 * Set up a cronjob for periodic tasks like this ``15,45 * * * * docker exec pretalx-app pretalx runperiodic``
-
-## Updates with docker-compose
-
 * Run ``docker-compose stop``, ``docker-compose pull`` and finally ``docker-compose up -d`` to upgrade to the newest version. 
+
+## Notes
+
+- Make sure your DNS A/AAAA records for your domain point to your server.
+- Ports 80 and 443 must be open and forwarded to your server for Let's Encrypt to work.
+- All persistent data is stored in Docker volumes or bind mounts. Back up your data regularly.
+- For more advanced configuration, see the [pretalx documentation](https://docs.pretalx.org/administrator/installation/).
 
 ## Other installations
 
-* Ansible role without docker: https://github.com/pretalx/ansible-pretalx/
-* More complex docker based pretalx installation: https://github.com/allmende/pretalx-docker
+- Ansible role without docker: https://github.com/pretalx/ansible-pretalx/
+- More complex docker based pretalx installation: https://github.com/allmende/pretalx-docker

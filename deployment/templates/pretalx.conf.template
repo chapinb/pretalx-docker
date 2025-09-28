@@ -1,0 +1,39 @@
+# nginx site template for pretalx (for use with SWAG)
+# Copy this file to ./swag-config/nginx/site-confs/pretalx.conf
+# Replace ${URL} with your domain (e.g., example.com)
+# Optionally set ${PRETALX_UPSTREAM} (defaults to pretalx:80)
+
+server {
+    listen 443 ssl;
+    server_name ${URL};
+
+    include /config/nginx/ssl.conf;
+
+    location / {
+        proxy_pass http://${PRETALX_UPSTREAM:-pretalx:80};
+        include /config/nginx/proxy.conf;
+
+        # WebSocket support
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+    }
+
+    # Optional: Serve well-known ACME challenges from SWAG if needed
+    location ^~ /.well-known/acme-challenge/ {
+        default_type "text/plain";
+        root /var/www/swag;
+    }
+}
+
+server {
+    listen 80;
+    server_name ${URL};
+    return 301 https://$host$request_uri;
+}
+
+# Instructions:
+# 1. Copy this file to ./swag-config/nginx/site-confs/pretalx.conf before starting the containers.
+# 2. Replace ${URL} with your actual domain name.
+# 3. Optionally, set PRETALX_UPSTREAM if your pretalx service is not named 'pretalx' or uses a different port.
+# 4. The SWAG container will automatically load this config for SSL reverse proxying to pretalx.
+# 5. For more info, see https://docs.linuxserver.io/images/docker-swag

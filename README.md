@@ -15,7 +15,7 @@ outdated. Please make sure you read the files before executing them, and check t
 
 - Copy `template.env` to `.env` and fill in all required values (domain, email, database password, etc.).
 - Edit `conf/pretalx.cfg` and fill in your own values (see [pretalx configuration documentation](https://docs.pretalx.org/en/latest/administrator/configure.html)).
-- Copy `deployment/templates/pretalx.conf.template` to `./swag-config/nginx/site-confs/pretalx.conf` and replace `${URL}` with your domain name.
+- Copy `deployment/templates/pretalx.conf.template` to `./conf/nginx/site-confs/pretalx.conf` and replace `${URL}` with your domain name.
 
 ### 2. Start the stack
 

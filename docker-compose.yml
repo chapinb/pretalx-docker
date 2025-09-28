@@ -15,7 +15,7 @@ services:
       - VALIDATION=${VALIDATION}
       - EMAIL=${EMAIL}
     volumes:
-      - ./swag-config:/config
+      - ./conf/nginx/:/config/nginx/
     networks:
       - proxy-tier
 

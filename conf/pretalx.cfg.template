@@ -1,0 +1,44 @@
+# Instructions: Copy this file to conf/pretalx.cfg and replace the placeholders with your actual values.
+# Warning: Do not commit conf/pretalx.cfg to version control as it contains sensitive information.
+# Placeholders are marked with ${VARIABLE_NAME} syntax.
+
+[filesystem]
+data = /data
+logs = /data/logs
+media = /public/media
+static = /public/static
+
+[site]
+; never run debug in production. Make sure you serve all requests for the
+; `/static/` and `/media/` paths when debug is False.
+; See [installation](https://docs.pretalx.org/administrator/installation/#step-7-ssl) for more information
+debug = False
+# Replace with your actual domain (e.g., https://pretalx.example.com)
+url = ${PRETALX_SITE_URL}
+
+[database]
+backend = postgresql
+name = ${POSTGRES_DB}
+user = ${POSTGRES_USER}
+# Use the same password as your .env file
+password = ${POSTGRES_PASSWORD}
+host = db
+port = 5432
+
+[mail]
+# Email address to send from (e.g., noreply@example.com)
+from = ${PRETALX_MAIL_FROM}
+host = smtp
+port = 25
+#user = ${PRETALX_MAIL_USER}
+#password = ${PRETALX_MAIL_PASSWORD}
+#tls = False
+#ssl = True
+
+[redis]
+location = redis://redis/0
+sessions=true
+
+[celery]
+backend = redis://redis/1
+broker = redis://redis/2

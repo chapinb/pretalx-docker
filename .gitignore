@@ -1,2 +1,5 @@
 volumes/
 .env
+conf/pretalx.cfg
+conf/nginx/site-confs/pretalx.conf
+.idea/

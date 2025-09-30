@@ -14,7 +14,7 @@ outdated. Please make sure you read the files before executing them, and check t
 ### 1. Prepare configuration
 
 - Copy `template.env` to `.env` and fill in all required values (domain, email, database password, etc.).
-- Edit `conf/pretalx.cfg` and fill in your own values (see [pretalx configuration documentation](https://docs.pretalx.org/en/latest/administrator/configure.html)).
+- Copy `conf/pretalx.cfg.template` to `conf/pretalx.cfg` and replace all `${VARIABLE_NAME}` placeholders with your actual values (see [pretalx configuration documentation](https://docs.pretalx.org/en/latest/administrator/configure.html)).
 - Copy `deployment/templates/pretalx.conf.template` to `./conf/nginx/site-confs/pretalx.conf` and replace `${URL}` with your domain name.
 
 ### 2. Start the stack
@@ -43,7 +43,7 @@ This setup uses [linuxserver/swag](https://docs.linuxserver.io/images/docker-swa
 
 ### For production
 
-* Edit ``conf/pretalx.cfg`` and fill in your own values (→ [configuration
+* Copy ``conf/pretalx.cfg.template`` to ``conf/pretalx.cfg`` and replace all placeholders with your own values (→ [configuration
   documentation](https://docs.pretalx.org/en/latest/administrator/configure.html))
 * Edit ``docker-compose.yml`` and change the line to ``ports: - "127.0.0.1:8346:80"`` (if you use nginx). **Change the
   database password.**
